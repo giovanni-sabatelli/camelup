@@ -10,6 +10,7 @@ class Color(Enum):
     YELLOW = 0xFFEA00
     PURPLE = 0x702963
 
+
 class Player:
     def __init__(self, name: str):
         self.name = name
@@ -115,6 +116,7 @@ class Card:
     def __init__(self, color: str, value: int):
         self.color = color
         self.value = value
+
 
 if __name__ == "__main__":
     manager = Manager()
