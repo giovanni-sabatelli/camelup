@@ -4,11 +4,11 @@ import random
 
 
 class Color(Enum):
-    BLUE = 1
-    GREEN = 2
-    RED = 3
-    YELLOW = 4
-    PURPLE = 5
+    BLUE = 0x89CFF0
+    GREEN = 0x4F7942
+    RED = 0xD2042D
+    YELLOW = 0xFFEA00
+    PURPLE = 0x702963
 
 
 class Player:
@@ -17,7 +17,7 @@ class Player:
         self.money = 3
         self.hand = []
 
-    def __str__(self)->str:
+    def __str__(self) -> str:
         return self.name
 
 
@@ -91,6 +91,9 @@ class Board:
             for color in Color
         }
         self.dice = {color: random.randint(1, 3) for color in Color}
+
+    def __str__(self) -> str:
+        
 
 
 class Camel:
