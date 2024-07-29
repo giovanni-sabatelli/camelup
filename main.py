@@ -4,12 +4,11 @@ import random
 
 
 class Color(Enum):
-    BLUE = 1
-    GREEN = 2
-    RED = 3
-    YELLOW = 4
-    PURPLE = 5
-
+    BLUE = 0x89CFF0
+    GREEN = 0x4F7942
+    RED = 0xD2042D
+    YELLOW = 0xFFEA00
+    PURPLE = 0x702963
 
 class Player:
     def __init__(self, name: str):
