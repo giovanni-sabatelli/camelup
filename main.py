@@ -10,6 +10,7 @@ class Color(Enum):
     YELLOW = 4
     PURPLE = 5
 
+text_to_color = { "R": Color.RED, "G": Color.GREEN, "B": Color.BLUE, "Y": Color.YELLOW, "P":Color.PURPLE}
 
 class Player:
     def __init__(self, name: str):
@@ -41,7 +42,7 @@ class Manager:
 
     def play_turn(self):
         player = self.players[self.current_player]
-        option = input("Enter 'r' to roll dice or 'b' to place a bet: ")
+        option = input(f"{player}: Enter 'r' to roll dice or 'b' to place a bet: ")
         if option == "r":
             self.move_camel(player)
         elif option == "b":
@@ -57,7 +58,7 @@ class Manager:
             self.play_turn()
 
     def roll_dice(self) -> tuple[Color, int]:
-        color = random.choice(self.board.dice.keys())
+        color = random.choice(tuple(self.board.dice.keys()))
         val = self.board.dice[color]
         del self.board.dice[color]
         return (color, val)
@@ -113,3 +114,9 @@ class Card:
     def __init__(self, color: str, value: int):
         self.color = color
         self.value = value
+
+if __name__ == "__main__":
+    manager = Manager()
+    manager.add_player("Alice")
+    manager.add_player("Bob")
+    manager.play()
