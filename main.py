@@ -31,7 +31,7 @@ class Manager:
         while not self.is_game_over():
             self.play_turn()
             self.current_player = (self.current_player + 1) % len(self.players)
-        self.declare_winner()
+        print(self.declare_winner())
 
     def is_game_over(self) -> bool:
         return len(self.board.dice) == 0
@@ -72,7 +72,7 @@ class Manager:
 
     def declare_winner(self):
         winner = max(self.players, key=lambda x: x.money)
-        print(f"{winner.name} wins with {winner.money} coins!")
+        return f"{winner.name} wins with {winner.money} coins!"
 
 
 class Board:
@@ -97,7 +97,7 @@ class Camel:
 
 class Tile:
     def __init__(self):
-        self.contents = deque(len(Color))
+        self.contents = deque(maxlen=len(Color))
 
     def add_camel(self, camel: Camel):
         self.contents.append(camel)
