@@ -45,7 +45,7 @@ class Manager:
         if option == "r":
             self.move_camel(player)
         elif option == "b":
-            color = input("Enter the color of the camel you want to bet on: ")
+            color = input("Enter the color of the camel you want to bet on: ").upper()
             if color in Color.__members__:
                 color = Color[color]
             else:
