@@ -10,7 +10,6 @@ class Color(Enum):
     YELLOW = 4
     PURPLE = 5
 
-text_to_color = { "R": Color.RED, "G": Color.GREEN, "B": Color.BLUE, "Y": Color.YELLOW, "P":Color.PURPLE}
 
 class Player:
     def __init__(self, name: str):
@@ -18,7 +17,7 @@ class Player:
         self.money = 3
         self.hand = []
 
-    def __str__(self)->str:
+    def __str__(self) -> str:
         return self.name
 
 
@@ -92,6 +91,9 @@ class Board:
             for color in Color
         }
         self.dice = {color: random.randint(1, 3) for color in Color}
+
+    def __str__(self) -> str:
+        pass
 
 
 class Camel:
