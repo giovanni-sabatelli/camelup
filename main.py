@@ -38,6 +38,20 @@ class Manager:
 
     def play_turn(self):
         player = self.players[self.current_player]
+        option = input("Enter 'r' to roll dice or 'b' to place a bet: ")
+        if option == "r":
+            self.move_camel(player)
+        elif option == "b":
+            color = input("Enter the color of the camel you want to bet on: ")
+            if color in Color.__members__:
+                color = Color[color]
+            else:
+                print("Invalid color. Try again.")
+                self.play_turn()
+            self.place_bet(player, color)
+        else:
+            print("Invalid input. Try again.")
+            self.play_turn()
 
     def roll_dice(self) -> tuple[Color, int]:
         color = random.choice(self.board.dice.keys())
