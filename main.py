@@ -17,6 +17,9 @@ class Player:
         self.money = 3
         self.hand = []
 
+    def __str__(self)->str:
+        return self.name
+
 
 class Manager:
     def __init__(self):
@@ -72,7 +75,7 @@ class Manager:
 
     def declare_winner(self):
         winner = max(self.players, key=lambda x: x.money)
-        return f"{winner.name} wins with {winner.money} coins!"
+        return f"{winner} wins with {winner.money} coins!"
 
 
 class Board:
