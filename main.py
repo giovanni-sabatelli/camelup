@@ -49,7 +49,7 @@ class Manager:
         player = self.players[self.current_player]
         option = input(f"{player}: Enter 'r' to roll dice or 'b' to place a bet: ")
         if option == "r":
-            roll_message = self.move_camel(player)
+            roll_message = self.move_camel(player, *self.roll_dice())
             player.money += 1
             self.last_message = f"{self.players[self.current_player]} rolled {roll_message}"
         elif option == "b":
@@ -71,8 +71,7 @@ class Manager:
         del self.board.dice[color]
         return (color, val)
 
-    def move_camel(self, player: Player):
-        color, val = self.roll_dice()
+    def move_camel(self, player: Player, color: Color, val: int) -> str:
         tile_pos = self.board.camel_pos[color]
         tile = self.board.tiles[tile_pos]
         camel_stack = deque()
