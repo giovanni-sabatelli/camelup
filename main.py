@@ -100,23 +100,23 @@ class Board:
 
     def __str__(self) -> str:
         outstr = ""
-        for index in range(4,-1,-1):
+        for index in range(4, -1, -1):
             deltaX = 0
             for i in range(len(self.tiles)):
                 tile = self.tiles[i]
                 if(index >= len(tile.get_camels())):
                     continue
                 camel = tile.get_camels()[index]
-                outstr += " "+ (" " * (i * 5 - deltaX))  + str(camel) 
+                outstr += " " + (" " * (i * 5 - deltaX)) + str(camel) 
                 deltaX = 5 + i * 5
             outstr += "\n"
         # tile row
         for i in range(len(self.tiles)):
-            if len(str(i+1)) == 1:
-                outstr += f"| {i+1}  "
+            if len(str(i + 1)) == 1:
+                outstr += f"| {i + 1}  "
             else:
                 #2 digits
-                outstr += f"| {i+1} "
+                outstr += f"| {i + 1} "
         return outstr
                     
 class Camel:
