@@ -36,6 +36,7 @@ class Manager:
         while not self.is_game_over():
             self.play_turn()
             self.current_player = (self.current_player + 1) % len(self.players)
+        self.cash_bets()
         print(self.declare_winner())
 
     def is_game_over(self) -> bool:
@@ -89,6 +90,20 @@ class Manager:
     def declare_winner(self):
         winner = max(self.players, key=lambda x: x.money)
         return f"{winner} wins with {winner.money} coins!"
+    
+    def cash_bets(self):
+        order = []
+        for tile in self.board.tiles:
+            for camel in tile.get_camels():
+                order.append(camel)
+        for player in self.players:
+            for card in player.hand:
+                if card.color == order[len(order) - 1].color:
+                    player.money += card.value
+                elif card.color == order[len(order) - 2].color:
+                    player.money += 1
+                else:
+                    player.money -= 1
 
 
 class Board:
@@ -107,25 +122,23 @@ class Board:
         self.camel_emojis = {camel: f"{" " * self.camel_pos[camel]}{eval(f"Back.{camel.name}")}🐪{Style.RESET_ALL}" for camel in Color}
 
     def __str__(self) -> str:
-        outstr = ""
-        for index in range(4, -1, -1):
-            deltaX = 0
+        out_str = ""
+        for ind in range(4, -1, -1):
+            dx = 0
             for i in range(len(self.tiles)):
                 tile = self.tiles[i]
-                if(index >= len(tile.get_camels())):
+                if ind >= len(tile.get_camels()):
                     continue
-                camel = tile.get_camels()[index]
-                outstr += " " + (" " * (i * 5 - deltaX)) + str(camel) 
-                deltaX = 5 + i * 5
-            outstr += "\n"
-        # tile row
+                camel = tile.get_camels()[ind]
+                out_str += " " + (" " * (i * 5 - dx)) + str(camel) 
+                dx = 5 + i * 5
+            out_str += "\n"
         for i in range(len(self.tiles)):
             if len(str(i + 1)) == 1:
-                outstr += f"| {i + 1}  "
+                out_str += f"| {i + 1}  "
             else:
-                #2 digits
-                outstr += f"| {i + 1} "
-        return outstr
+                out_str += f"| {i + 1} "
+        return out_str
                     
 class Camel:
     def __init__(self, color: Color):
