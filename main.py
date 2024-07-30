@@ -123,6 +123,7 @@ class Board:
 
     def __str__(self) -> str:
         out_str = ""
+
         for ind in range(4, -1, -1):
             dx = 0
             for i in range(len(self.tiles)):
@@ -132,12 +133,15 @@ class Board:
                 camel = tile.get_camels()[ind]
                 out_str += " " + (" " * (i * 5 - dx)) + str(camel) 
                 dx = 5 + i * 5
-            out_str += "\n"
+            if dx > 0:
+                out_str += "\n"
+        # Tile Marks row
         for i in range(len(self.tiles)):
             if len(str(i + 1)) == 1:
                 out_str += f"| {i + 1}  "
             else:
                 out_str += f"| {i + 1} "
+        
         return out_str
                     
 class Camel:
@@ -166,10 +170,12 @@ class Tile:
             outstr += " " +str(camel) + " "
         return outstr
 class Card:
-    def __init__(self, color: str, value: int):
+    def __init__(self, color: Color, value: int):
         self.color = color
         self.value = value
 
+    def __str__(self):
+        return f"{eval(f"Back.{self.color.name}")} {self.value[0]} {Style.RESET_ALL}"
 
 if __name__ == "__main__":
     manager = Manager()
