@@ -68,11 +68,19 @@ class Manager:
 
     def move_camel(self, player: Player):
         color, val = self.roll_dice()
-        camel_stack = deque()
-        self.board.tiles[val].add_camel(
-            self.board.tiles[self.board.camel_pos[color]].remove_camel()
-        )
-        self.board.camel_pos[color] = val
+        tile_pos = self.board.camel_pos[color]
+        tile = self.board.tiles[tile_pos]
+        camel_stack = []
+        while True:
+            new_camel = tile.remove_camel()
+            camel_stack.append(new_camel)
+            if new_camel.color == color:
+                break
+        end_tile = self.board.tiles[tile_pos+val]
+        while len(camel_stack) > 0:
+            new_camel = camel_stack.pop()
+            end_tile.add_camel(new_camel)
+            self.board.camel_pos[new_camel.color] = tile_pos+val
 
     def place_bet(self, player: Player, color: Color):
         card = self.board.cards[color].popleft()
