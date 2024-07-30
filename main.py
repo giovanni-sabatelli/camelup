@@ -56,7 +56,7 @@ class Manager:
             color = input("Enter the color of the camel you want to bet on: ").upper()
             if color in Color.__members__ and self.board.cards[Color[color]][0].value > 0:
                 color = Color[color]
-                self.last_message = f"{self.players[self.current_player]} picked up the {color.name} wager"
+                self.last_message = f"{self.players[self.current_player]} picked up the {color.name.title()} wager"
             else:
                 print("Invalid color. Try again.")
                 self.play_turn()
