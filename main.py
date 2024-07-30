@@ -163,12 +163,8 @@ class Board:
                 dx = 5 + i * 5
             if dx > 0:
                 out_str += "\n"
-        # Tile Marks row
         for i in range(len(self.tiles)):
-            if len(str(i + 1)) == 1:
-                out_str += f"| {i + 1}  "
-            else:
-                out_str += f"| {i + 1} "
+            out_str += f"| {i + 1}" + " " * (3 - len(str(i + 1)))
         
         return out_str
                     
