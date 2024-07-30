@@ -99,25 +99,23 @@ class Board:
         self.camel_emojis = {camel: f"{" " * self.camel_pos[camel]}{eval(f"Back.{camel.name}")}🐪{Style.RESET_ALL}" for camel in Color}
 
     def __str__(self) -> str:
-        outstr = ""
-        for index in range(4, -1, -1):
-            deltaX = 0
+        out_str = ""
+        for ind in range(4, -1, -1):
+            dx = 0
             for i in range(len(self.tiles)):
                 tile = self.tiles[i]
-                if(index >= len(tile.get_camels())):
+                if ind >= len(tile.get_camels()):
                     continue
-                camel = tile.get_camels()[index]
-                outstr += " " + (" " * (i * 5 - deltaX)) + str(camel) 
-                deltaX = 5 + i * 5
-            outstr += "\n"
-        # tile row
+                camel = tile.get_camels()[ind]
+                out_str += " " + (" " * (i * 5 - dx)) + str(camel) 
+                dx = 5 + i * 5
+            out_str += "\n"
         for i in range(len(self.tiles)):
             if len(str(i + 1)) == 1:
-                outstr += f"| {i + 1}  "
+                out_str += f"| {i + 1}  "
             else:
-                #2 digits
-                outstr += f"| {i + 1} "
-        return outstr
+                out_str += f"| {i + 1} "
+        return out_str
                     
 class Camel:
     def __init__(self, color: Color):
