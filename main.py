@@ -130,10 +130,7 @@ class Board:
         self.camel_emojis = {camel: f"{" " * self.camel_pos[camel]}{eval(f"Back.{camel.name}")}🐪{Style.RESET_ALL}" for camel in Color}
 
     def __str__(self) -> str:
-        out_str = " " * 31
-        for color, avail in self.cards.items():
-            out_str += f"{avail[0]} "
-        out_str += "\n\n"
+        out_str = " " * 31 + "".join(f"{avail[0]} " for avail in self.cards.values()) + "\n\n"
         for ind in range(4, -1, -1):
             dx = 0
             for i in range(len(self.tiles)):
