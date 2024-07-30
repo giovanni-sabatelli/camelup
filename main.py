@@ -1,14 +1,9 @@
 from collections import deque
 from enum import Enum
 import random
-<<<<<<< HEAD
-from colorama import Fore, Back, Style
-=======
 from colorama import init, Back, Style
 
 init(convert=True)
-
->>>>>>> daae06ddb3f5e603352500f327e1419783db53e8
 
 class Color(Enum):
     BLUE = 0x89CFF0
@@ -104,7 +99,6 @@ class Board:
         self.camel_emojis = {camel: f"{" " * self.camel_pos[camel]}{eval(f"Back.{camel.name}")}🐪{Style.RESET_ALL}" for camel in Color}
 
     def __str__(self) -> str:
-<<<<<<< HEAD
         outstr = ""
         for index in range(4,-1,-1):
             deltaX = 0
@@ -124,20 +118,7 @@ class Board:
                 #2 digits
                 outstr += f"| {i+1} "
         return outstr
-=======
-        result = ""
-        for i in range(4, -1, -1):
-            for tile in self.tiles:
-                if len(tile.contents) > i:
-                    result += f"{self.camel_emojis[tile.contents[i].color]}"
-                else:
-                    result += " "
-            result += "\n"
-        return result
                     
-
->>>>>>> daae06ddb3f5e603352500f327e1419783db53e8
-
 class Camel:
     def __init__(self, color: Color):
         self.color = color
