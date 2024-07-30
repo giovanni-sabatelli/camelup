@@ -111,6 +111,9 @@ class Manager:
                     player.money += 1
                 else:
                     player.money -= 1
+    
+    def calc_ev(self, color: Color) -> float:
+        
 
 
 class Board:
