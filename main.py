@@ -36,6 +36,7 @@ class Manager:
         while not self.is_game_over():
             self.play_turn()
             self.current_player = (self.current_player + 1) % len(self.players)
+        self.cash_bets()
         print(self.declare_winner())
 
     def is_game_over(self) -> bool:
@@ -81,6 +82,20 @@ class Manager:
     def declare_winner(self):
         winner = max(self.players, key=lambda x: x.money)
         return f"{winner} wins with {winner.money} coins!"
+    
+    def cash_bets(self):
+        order = []
+        for tile in self.board.tiles:
+            for camel in tile.get_camels():
+                order.append(camel)
+        for player in self.players:
+            for card in player.hand:
+                if card.color == order[len(order) - 1].color:
+                    player.money += card.value
+                elif card.color == order[len(order) - 2].color:
+                    player.money += 1
+                else:
+                    player.money -= 1
 
 
 class Board:
