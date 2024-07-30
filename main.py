@@ -1,14 +1,14 @@
 from collections import deque
 from enum import Enum
 import random
-
+from colorama import Fore, Back, Style
 
 class Color(Enum):
     BLUE = 0x89CFF0
     GREEN = 0x4F7942
     RED = 0xD2042D
     YELLOW = 0xFFEA00
-    PURPLE = 0x702963
+    MAGENTA = 0x702963
 
 
 class Player:
@@ -67,6 +67,7 @@ class Manager:
 
     def move_camel(self, player: Player):
         color, val = self.roll_dice()
+        camel_stack = deque()
         self.board.tiles[val].add_camel(
             self.board.tiles[self.board.camel_pos[color]].remove_camel()
         )
@@ -96,13 +97,32 @@ class Board:
         self.dice = {color: random.randint(1, 3) for color in Color}
 
     def __str__(self) -> str:
-        return "Board"
-
+        outstr = ""
+        for index in range(4,-1,-1):
+            deltaX = 0
+            for i in range(len(self.tiles)):
+                tile = self.tiles[i]
+                if(index >= len(tile.get_camels())):
+                    continue
+                camel = tile.get_camels()[index]
+                outstr += " "+ (" " * (i * 5 - deltaX))  + str(camel) 
+                deltaX = 5 + i * 5
+            outstr += "\n"
+        # tile row
+        for i in range(len(self.tiles)):
+            if len(str(i+1)) == 1:
+                outstr += f"| {i+1}  "
+            else:
+                #2 digits
+                outstr += f"| {i+1} "
+        return outstr
 
 class Camel:
-    def __init__(self, color: str):
+    def __init__(self, color: Color):
         self.color = color
-
+    
+    def __str__(self):
+        return f"{eval(f"Back.{self.color.name}")} 🐪 {Style.RESET_ALL}"
 
 class Tile:
     def __init__(self):
@@ -114,7 +134,14 @@ class Tile:
     def remove_camel(self) -> Camel:
         return self.contents.pop()
 
-
+    def get_camels(self):
+        return tuple(self.contents)
+    
+    def __str__(self):
+        outstr = ""
+        for camel in self.contents:
+            outstr += " " +str(camel) + " "
+        return outstr
 class Card:
     def __init__(self, color: str, value: int):
         self.color = color
