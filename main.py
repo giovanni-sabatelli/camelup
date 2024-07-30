@@ -26,6 +26,7 @@ class Player:
 class Manager:
     def __init__(self):
         self.board = Board()
+        self.last_message = ""
         self.players = []
         self.current_player = 0
 
@@ -44,15 +45,18 @@ class Manager:
 
     def play_turn(self):
         print(self.board)
+        print(self.last_message)
         player = self.players[self.current_player]
         option = input(f"{player}: Enter 'r' to roll dice or 'b' to place a bet: ")
         if option == "r":
-            self.move_camel(player)
+            roll_message = self.move_camel(player)
             player.money += 1
+            self.last_message = f"{self.players[self.current_player]} rolled {roll_message}"
         elif option == "b":
             color = input("Enter the color of the camel you want to bet on: ").upper()
             if color in Color.__members__ and self.board.cards[Color[color]][0].value > 0:
                 color = Color[color]
+                self.last_message = f"{self.players[self.current_player]} picked up the {color.name} wager"
             else:
                 print("Invalid color. Try again.")
                 self.play_turn()
@@ -82,6 +86,7 @@ class Manager:
             new_camel = camel_stack.pop()
             end_tile.add_camel(new_camel)
             self.board.camel_pos[new_camel.color] = tile_pos+val
+        return f"{color.name.title()} - {val}"
 
     def place_bet(self, player: Player, color: Color):
         if self.board.cards[color][0] == 0:
