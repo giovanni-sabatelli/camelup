@@ -51,7 +51,7 @@ class Manager:
             player.money += 1
         elif option == "b":
             color = input("Enter the color of the camel you want to bet on: ").upper()
-            if color in Color.__members__:
+            if color in Color.__members__ and self.board.cards[Color[color]][0].value > 0:
                 color = Color[color]
             else:
                 print("Invalid color. Try again.")
@@ -84,6 +84,9 @@ class Manager:
             self.board.camel_pos[new_camel.color] = tile_pos+val
 
     def place_bet(self, player: Player, color: Color):
+        if self.board.cards[color][0] == 0:
+            print("No more bets available for this camel.")
+            return
         card = self.board.cards[color].popleft()
         player.hand.append(card)
 
@@ -115,15 +118,17 @@ class Board:
             self.tiles[tile_num].add_camel(camel)
             self.camel_pos[camel.color] = tile_num
         self.cards = {
-            color: deque(Card(color, value) for value in (5, 3, 2, 2))
+            color: deque(Card(color, value) for value in (5, 3, 2, 2, 0))
             for color in Color
         }
         self.dice = {color: random.randint(1, 3) for color in Color}
         self.camel_emojis = {camel: f"{" " * self.camel_pos[camel]}{eval(f"Back.{camel.name}")}🐪{Style.RESET_ALL}" for camel in Color}
 
     def __str__(self) -> str:
-        out_str = ""
-
+        out_str = " " * 31
+        for color, avail in self.cards.items():
+            out_str += f"{avail[0]} "
+        out_str += "\n\n"
         for ind in range(4, -1, -1):
             dx = 0
             for i in range(len(self.tiles)):
@@ -175,7 +180,7 @@ class Card:
         self.value = value
 
     def __str__(self):
-        return f"{eval(f"Back.{self.color.name}")} {self.value[0]} {Style.RESET_ALL}"
+        return f"{eval(f"Back.{self.color.name}")} {self.value} {Style.RESET_ALL}"
 
 if __name__ == "__main__":
     manager = Manager()
