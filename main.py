@@ -75,17 +75,17 @@ class Manager:
         color, val = self.roll_dice()
         tile_pos = self.board.camel_pos[color]
         tile = self.board.tiles[tile_pos]
-        camel_stack = []
+        camel_stack = deque()
         while True:
             new_camel = tile.remove_camel()
             camel_stack.append(new_camel)
             if new_camel.color == color:
                 break
-        end_tile = self.board.tiles[tile_pos+val]
+        end_tile = self.board.tiles[tile_pos + val]
         while len(camel_stack) > 0:
             new_camel = camel_stack.pop()
             end_tile.add_camel(new_camel)
-            self.board.camel_pos[new_camel.color] = tile_pos+val
+            self.board.camel_pos[new_camel.color] = tile_pos + val
         return f"{color.name.title()} - {val}"
 
     def place_bet(self, player: Player, color: Color):
