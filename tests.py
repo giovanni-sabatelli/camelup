@@ -1,5 +1,5 @@
 import unittest
-from main import Manager, Player, Camel, Color
+from main import Manager, Player, Camel, Color, Card, Tile
 
 from colorama import Back, Style
 
@@ -65,12 +65,36 @@ class TestCamelUp(unittest.TestCase):
     def test_roll_dice_bounds(self):
         dice_roll = self.test_manager.roll_dice()
         self.assertTrue(dice_roll[1] >= 1)
-        
-    def test_roll_dice_bounds(self):
+
+    def test_roll_dice_bounds2(self):
         dice_roll = self.test_manager.roll_dice()
         self.assertTrue(dice_roll[1] <= 3)
     
+    def test_place_bet(self):
+        self.test_manager.place_bet(self.test_manager.players[0],Color.MAGENTA)
+        self.assertFalse(len(self.test_manager.board.cards[Color.MAGENTA]) == len(self.test_manager.board.cards[Color.RED]))
 
+    def test_place_bet(self):
+        self.test_manager.place_bet(self.test_manager.players[0],Color.GREEN)
+        self.assertTrue(len(self.test_manager.board.cards[Color.MAGENTA]) == len(self.test_manager.board.cards[Color.RED]))
 
+    def test_card_data_type(self):
+        card = Card()
+        self.assertIsInstance(card,Card)
+    def test_card_str(self):
+        card = Card(Color.GREEN,5)
+        self.assertTrue(str(card) ==  f"{Back.GREEN} 5 {Style.RESET_ALL}")
+        
+    def test_card_str2(self):
+        card = Card(Color.RED,5)
+        self.assertEqual(str(card), f"{Back.GREEN} 5 {Style.RESET_ALL}")
+
+    def test_card_str(self):
+        card = Card(Color.GREEN,3)
+        self.assertEqual(str(card),  f"{Back.GREEN} 5 {Style.RESET_ALL}")
+
+    def test_tile(self):
+        tile = Tile()
+        self.assertIsInstance(tile,Tile)
 if __name__ == "__main__":
     unittest.main()
