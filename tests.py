@@ -79,19 +79,20 @@ class TestCamelUp(unittest.TestCase):
         self.assertTrue(len(self.test_manager.board.cards[Color.MAGENTA]) == len(self.test_manager.board.cards[Color.RED]))
 
     def test_card_data_type(self):
-        card = Card()
+        card = Card(Color.YELLOW,10)
         self.assertIsInstance(card,Card)
-    def test_card_str(self):
+
+    def test_card_str1(self):
         card = Card(Color.GREEN,5)
-        self.assertTrue(str(card) ==  f"{Back.GREEN} 5 {Style.RESET_ALL}")
+        self.assertEqual(str(card),  f"{Back.GREEN} 5 {Style.RESET_ALL}")
         
     def test_card_str2(self):
         card = Card(Color.RED,5)
-        self.assertEqual(str(card), f"{Back.GREEN} 5 {Style.RESET_ALL}")
+        self.assertNotEqual(str(card), f"{Back.GREEN} 5 {Style.RESET_ALL}")
 
-    def test_card_str(self):
+    def test_card_str3(self):
         card = Card(Color.GREEN,3)
-        self.assertEqual(str(card),  f"{Back.GREEN} 5 {Style.RESET_ALL}")
+        self.assertNotEqual(str(card),  f"{Back.GREEN} 5 {Style.RESET_ALL}")
 
     def test_tile(self):
         tile = Tile()
