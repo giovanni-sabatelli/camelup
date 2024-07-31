@@ -121,8 +121,7 @@ class Manager:
         if not done:
             places = defaultdict(lambda: [0, 0, 0, 0, 0])
             for roll in product(range(1, 4), repeat=length):
-                roll = tuple((k, roll[i]) for i, k in enumerate(self.board.dice))
-                for order in permutations(roll, length):
+                for order in permutations(tuple((k, roll[i]) for i, k in enumerate(self.board.dice)), length):
                     temp = deepcopy(self)
                     for move in order:
                         temp.move_camel(temp.current_player, *move)
