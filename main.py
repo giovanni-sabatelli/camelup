@@ -127,12 +127,14 @@ class Manager:
                         temp.move_camel(temp.current_player, *move)
                     j = 0
                     for tile in temp.board.tiles:
+                        if j == 5:
+                            break
                         for camel in tile.get_camels():
                             places[camel.color][j] += 1
                             j += 1
             self.places = places
         return {c: (n[4] * self.board.cards[c][0].value + n[3] - n[2] - n[1] - n[0]) / (factorial(length) * 3 ** length) for c, n in self.places.items() if self.board.cards[c][0].value != 0}
-            
+
 
 
 class Board:
