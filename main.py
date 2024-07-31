@@ -132,13 +132,13 @@ class Manager:
                             j += 1
             self.places = places
         return {c: (n[4] * self.board.cards[c][0].value + n[3] - n[2] - n[1] - n[0]) / (factorial(length) * 3 ** length) for c, n in self.places.items() if self.board.cards[c][0].value != 0}
-        
+            
 
 
 class Board:
     def __init__(self):
         self.camel_pos = {color: 0 for color in Color}
-        self.tiles = tuple(Tile() for _ in range(16))
+        self.tiles = tuple(Tile() for _ in range(18))
         for camel in (Camel(color) for color in Color):
             tile_num = random.randint(0, 2)
             self.tiles[tile_num].add_camel(camel)
@@ -188,11 +188,6 @@ class Tile:
     def get_camels(self):
         return tuple(self.contents)
     
-    def __str__(self):
-        outstr = ""
-        for camel in self.contents:
-            outstr += " " +str(camel) + " "
-        return outstr
 class Card:
     def __init__(self, color: Color, value: int):
         self.color = color
