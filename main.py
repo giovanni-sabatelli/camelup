@@ -29,7 +29,7 @@ class Player:
 class Manager:
     def __init__(self):
         self.board = Board()
-        self.last_message = ""
+        self.last_message = "Welcome to Camel Up!\n"
         self.players = []
         self.current_player = 0
 
@@ -49,7 +49,7 @@ class Manager:
     def play_turn(self):
         print(f"\n{self.board}\n")
         print(self.last_message, end="")
-        print(", ".join(f"{c.name.title()}: {round(v, 5)}" for c, v in self.calc_ev().items()) + "\n")
+        print(", ".join(f"{c.name.title()}: {round(v, 5)}" for c, v in self.calc_ev(not("rolled" in self.last_message or "elcome" in self.last_message)).items()) + "\n")
         player = self.players[self.current_player]
         option = input(f"{player}: Enter 'r' to roll dice or 'b' to place a bet: ")
         if option == "r":
@@ -61,10 +61,10 @@ class Manager:
             if color in Color.__members__ and self.board.cards[Color[color]][0].value > 0:
                 color = Color[color]
                 self.last_message = f"{self.players[self.current_player]} picked up the {color.name.title()} wager\n"
+                self.place_bet(player, color)
             else:
                 print("Invalid color. Try again.")
                 self.play_turn()
-            self.place_bet(player, color)
         else:
             print("Invalid input. Try again.")
             self.play_turn()
@@ -116,22 +116,25 @@ class Manager:
                 else:
                     player.money -= 1
     
-    def calc_ev(self) -> dict[Color, float]:
-        places = defaultdict(lambda: [0, 0, 0, 0, 0])
-        for roll in product(range(1, 4), repeat=(length:=len(self.board.dice))):
-            curr = deepcopy(self)
-            curr.board.dice = tuple((k, roll[i]) for i, k in enumerate(self.board.dice))
-            for order in permutations(curr.board.dice, length):
-                temp = deepcopy(curr)
-                for move in order:
-                    temp.move_camel(temp.current_player, *move)
-                j = 0
-                for tile in temp.board.tiles:
-                    for camel in tile.get_camels():
-                        places[camel.color][j] += 1
-                        j += 1
-
-        return {c: (n[4] * self.board.cards[c][0].value + n[3] - n[2] - n[1] - n[0]) / (factorial(length) * 3 ** length) for c, n in places.items() if self.board.cards[c][0].value != 0}
+    def calc_ev(self,done:bool) -> dict[Color, float]:
+        length = len(self.board.dice)
+        if not done:
+            places = defaultdict(lambda: [0, 0, 0, 0, 0])
+            
+            for roll in product(range(1, 4), repeat=length):
+                curr = deepcopy(self)
+                curr.board.dice = tuple((k, roll[i]) for i, k in enumerate(self.board.dice))
+                for order in permutations(curr.board.dice, length):
+                    temp = deepcopy(curr)
+                    for move in order:
+                        temp.move_camel(temp.current_player, *move)
+                    j = 0
+                    for tile in temp.board.tiles:
+                        for camel in tile.get_camels():
+                            places[camel.color][j] += 1
+                            j += 1
+            self.places = places
+        return {c: (n[4] * self.board.cards[c][0].value + n[3] - n[2] - n[1] - n[0]) / (factorial(length) * 3 ** length) for c, n in self.places.items() if self.board.cards[c][0].value != 0}
         
 
 
@@ -205,5 +208,4 @@ if __name__ == "__main__":
     manager = Manager()
     manager.add_player("Alice")
     manager.add_player("Bob")
-    manager.calc_ev()
     manager.play()
